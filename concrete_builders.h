@@ -15,4 +15,15 @@ class ConcreteBuiderA : public Builder{
     const char * name = "ConcreteBuiderA";
 };
 
+class ConcreteBuiderB : public Builder{
+
+  public:
+
+    void add_feature_a();
+    void add_feature_b();
+    void add_feature_c();
+    void add_feature_d(); 
+  private:
+    const char * name = "ConcreteBuiderB";
+};
 #endif

@@ -22,12 +22,15 @@ CFLAGS = \
 
 default: builder 
 
-builder: main.o concrete_builders.o
+builder: main.o concrete_builders.o director.o
 	$(CC) $(CFLAGS) -o $(TARGET) main.o concrete_builders.o 
 
 
 concrete_builders.o: concrete_builders.h concrete_builders.cpp
 	$(CC) $(CFLAGS) -c concrete_builders.cpp
+
+director.o:
+	$(CC) $(CFLAGS) -c director.cpp
 
 main.o: main.cpp
 	$(CC) $(CFLAGS) -c main.cpp
@@ -36,5 +39,7 @@ clean:
 	clear
 	@echo Cleaning up
 	rm -f *.exe *.swp *.o
+upd: 
+	@touch *.cpp
 
-
+rebuild: upd builder
