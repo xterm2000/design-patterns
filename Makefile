@@ -1,45 +1,74 @@
-TARGET = main
-TARGET_DIR = ./runtime/
-CC = g++
-CFLAGS = \
-	-Wall \
-	-O2 \
-	-std=c++17 \
-	-Wshadow \
-	-g \
+# compiler flag 
+GCC := g++
 
-#-Wall \
-#-fmax-errors=2 \
-#-O2 \
-#-std=c++17 \
-#-Wshadow \
-#-g \
-#-pedantic
-#-Wextra \
-#-Wfatal-errors \ 
-#-Werror \
-#-pedantic 
+#define any includes other than /usr/include
+INCLUDES := -I./include
 
-default: builder 
+# library paths in addition to usr/lib  
+LFLAGS := -L./lib
 
-builder: main.o concrete_builders.o director.o
-	$(CC) $(CFLAGS) -o $(TARGET) main.o concrete_builders.o 
+# paths 
+BIN_DIR := bin
+SRC_DIR := src
+OBJ_DIR := obj
+
+# targets 
+EXE := $(BIN_DIR)/main
+
+# list of source files 
+SRC := $(wildcard $(SRC_DIR)/*.cpp)
+
+# from the source list the objects 
+#OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+OBJ := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
+
+######## FLAGS ##########
+
+# when linking, to avoid linker errors, 
+# it is strongly recommended to put LDFLAGS before object file ans LDLIBS after 
+
+CPPFLAGS := -Iinclude -MMD -MP            # preprocessor flag
+LDFLAGS  := -Llib                         # linker flag 
+LDLIBS   := -lm                           # left empty if no libs needed   
+CFLAGS   := -Wall -O2 \
+	-std=c++17 -Wshadow -g # -pedantic  # compiler flags
+#########################
+
+files := $(wildcard $(SRC_DIR)/*.cpp)
+objects := $(patsubst %.cpp,%.o,$(files))
+
+.PHONY: all clean
+
+all: $(EXE)
+
+# linking step
+$(EXE): $(OBJ) | $(BIN_DIR)
+	@echo "linker"
+	$(GCC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+# compilation 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	@echo "compile"
+	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 
-concrete_builders.o: concrete_builders.h concrete_builders.cpp
-	$(CC) $(CFLAGS) -c concrete_builders.cpp
 
-director.o:
-	$(CC) $(CFLAGS) -c director.cpp
+# create directories of not exist 
+$(BIN_DIR) $(OBJ_DIR): 	
+	@mkdir -p $@
 
-main.o: main.cpp
-	$(CC) $(CFLAGS) -c main.cpp
 
 clean:
-	clear
-	@echo Cleaning up
-	rm -f *.exe *.swp *.o
-upd: 
-	@touch *.cpp
+	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
+#$(RM) $(objects) $(target)
 
-rebuild: upd builder
+
+info:
+	@echo "------- info --------"
+	@echo "files: "  $(files)
+	@echo "objects:" $(objects)
+
+
+print-%: ; @echo $*=$($*)
+
+#-include $(OBJ:.o=.d)
