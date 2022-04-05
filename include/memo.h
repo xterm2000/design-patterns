@@ -14,6 +14,7 @@ class Memo: public Message{
     void set(const string& s1);
     void print();
     Message* clone() const { return new Memo(*this); }
+    virtual string get_type() { return "Memo" };
 
 
 };

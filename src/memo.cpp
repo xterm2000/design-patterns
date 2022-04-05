@@ -1,5 +1,5 @@
 #include <iostream>
-#include "fax.h"
+#include "memo.h"
 
 using namespace std;
 

@@ -5,7 +5,9 @@
 #include "concrete_builders.h"
 #include "log.h"
 
-
+#include "mail.h"
+#include "memo.h"
+#include "fax.h"
 
 using namespace std;
 
@@ -49,11 +51,15 @@ int test (int n , int k){
 }
 
 int main(int argc, const char* argv[]){
+ 
+ 
+  Mail m;
+  Fax f;
+  Memo mm;
 
-  int a = test (37,3);
-
-  cout<<a<<endl;
-
+  m.print();
+  f.print();
+  mm.print();
 
   return EXIT_SUCCESS;
 

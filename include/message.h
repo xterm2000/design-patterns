@@ -10,6 +10,7 @@ class Message{
     virtual ~Message() {};
     virtual Message* clone() const  = 0;
     virtual void set(const string& s1) = 0;
+    virtual string get_type() = 0;
     virtual void print() = 0;
 };
 #endif
