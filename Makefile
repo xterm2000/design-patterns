@@ -43,30 +43,31 @@ all: $(EXE)
 
 # linking step
 $(EXE): $(OBJ) | $(BIN_DIR)
-	@echo "linker"
+	@echo "linking..."
 	$(GCC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 # compilation 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
-	@echo "compile"
+	@echo "compilng..."
 	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 
 
 # create directories of not exist 
-$(BIN_DIR) $(OBJ_DIR): 	
+$(BIN_DIR) $(OBJ_DIR): 
+	@echo "creating dir  $@"
 	@mkdir -p $@
 
 
 clean:
+	@echo "Cleaning up..."
 	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
-#$(RM) $(objects) $(target)
 
 
 info:
 	@echo "------- info --------"
-	@echo "files: "  $(files)
-	@echo "objects:" $(objects)
+	@echo "files: "  $(SRC)
+	@echo "objects:" $(OBJ)
 
 
 print-%: ; @echo $*=$($*)
