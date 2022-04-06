@@ -1,17 +1,25 @@
 #include <iostream>
 #include <cmath>
-
+#include <map>
 #include "graph.h"
 #include "concrete_builders.h"
 #include "log.h"
+
+#include "message.h"
+
 
 #include "mail.h"
 #include "memo.h"
 #include "fax.h"
 
+
+
 #include "abstract_factory.h"
 
 using namespace std;
+
+typedef AbstractFactory<string,Message> Factory_T;
+template class AbstractFactory<string, Message>;
 
 void test_builder() {
 
@@ -53,9 +61,23 @@ int test (int n , int k){
 }
 
 int main(int argc, const char* argv[]){
- 
-AbstractFactory<string,Message*> f;
-f= AbstractFactory::get_instance()
+
+  Message* mm = new Memo();
+
+ int* b = NULL;
+  Factory_T::get_instance().add_prototype("Memo",mm);
+  Factory_T::get_instance().add_prototype("Memo",mm);
+  Factory_T::get_instance().add_prototype("Memo",mm);
+    try {
+      Message* m = Factory_T::get_instance().create_object("Memo");
+      m->print();
+      delete m;
+      m= Factory_T::get_instance().create_object("Fax");
+      cout<<m<<endl;
+    } catch (...){
+      cout<<"exception"<<endl;
+
+    }
   return EXIT_SUCCESS;
 
 }

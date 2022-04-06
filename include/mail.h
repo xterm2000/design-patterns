@@ -14,7 +14,7 @@ class Mail: public Message{
     void set(const string& s1);
     void print();
     Message* clone() const { return new Mail(*this); }
-    virtual string get_type() { return "Mail" };
+    virtual string get_type() { return "Mail"; };
 
 };
 

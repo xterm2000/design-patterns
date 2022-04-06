@@ -9,38 +9,45 @@
 using namespace std;
 
 
-template <class Key, class Object>
+template <class T, class Object>
 class AbstractFactory{
 
   public:
 
     //-----------------------------------------------------------
-    AbstractFactory& get_instance(){
+    static AbstractFactory& get_instance(){
       static AbstractFactory f;
       return f;
     }
 
     //-----------------------------------------------------------
-    Object* create_object(const Key &key){
-      return m_prototypes[key]->clone();
+    Object* create_object(const T &key){
+
+      auto it = m_prototypes.find(key);
+
+      if (it == m_prototypes.end())
+        return nullptr;
+      else
+        return m_prototypes[key]->clone();
     }
 
     //-----------------------------------------------------------
-    void add_prototype( const Key key, const Object *proto ){
+    void add_prototype( const T &key, const Object *proto ){
       m_prototypes[key] = proto;
     }
 
     //-----------------------------------------------------------
     ~AbstractFactory(){
-      for (map <const Key, const Object*>::iterator it = m_prototypes.begin();
-	  it!=m_prototypes.end();
-	  ++it)
-	delete it->second;
+      // remove the mappings 
+      for ( auto it = m_prototypes.begin();
+          it != m_prototypes.end();
+          ++it)
+        delete it->second;
     }
 
   private:
-    map <const Key, const Object*> m_prototypes;
-    // 
+    map < const T, const Object * > m_prototypes;
+    //  hidden ctors 
     AbstractFactory(){};
     AbstractFactory( const AbstractFactory& other );
     AbstractFactory& operator=(const AbstractFactory&);

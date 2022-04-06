@@ -30,8 +30,9 @@ OBJ := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
 CPPFLAGS := -Iinclude -MMD -MP            # preprocessor flag
 LDFLAGS  := -Llib                         # linker flag 
 LDLIBS   := -lm                           # left empty if no libs needed   
-CFLAGS   := -Wall -O2 \
-	-std=c++17 -Wshadow -g # -pedantic  # compiler flags
+CFLAGS   := -Wall -O2 -std=c++17 -Wshadow -g -fmax-errors=2 -g
+# -pedantic  
+#  # compiler flags
 #########################
 
 files := $(wildcard $(SRC_DIR)/*.cpp)

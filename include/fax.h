@@ -14,7 +14,7 @@ class Fax: public Message{
     void set(const string& s1);
     void print();
     Message* clone() const { return new Fax(*this); }
-    virtual string get_type() { return "Fax" };
+    virtual string get_type() { return "Fax"; };
 
 
 };
