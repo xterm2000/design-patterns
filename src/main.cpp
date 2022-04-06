@@ -9,6 +9,8 @@
 #include "memo.h"
 #include "fax.h"
 
+#include "abstract_factory.h"
+
 using namespace std;
 
 void test_builder() {
@@ -52,15 +54,8 @@ int test (int n , int k){
 
 int main(int argc, const char* argv[]){
  
- 
-  Mail m;
-  Fax f;
-  Memo mm;
-
-  m.print();
-  f.print();
-  mm.print();
-
+AbstractFactory<string,Message*> f;
+f= AbstractFactory::get_instance()
   return EXIT_SUCCESS;
 
 }
